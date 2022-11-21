@@ -65,9 +65,9 @@ class Form(QDialog):
     def clickMethod(self):
         try:
             threading.Thread(target=self.convertInClass(), daemon=True).start()
-            self.commandLineOut.append(f'Your video was found and downloaded in {self.file}')
+            self.commandLineOut.append(f'Your video was found and downloaded in {self.file}.')
         except:
-            self.commandLineOut.append('Your video was not found, check the url')
+            self.commandLineOut.append('Your video was not found, check the url.')
 
     def convertInClass(self):
         self.cbString=str(self.cb.currentText())
@@ -83,6 +83,7 @@ class Form(QDialog):
     def fileSelect(self):
         self.file = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         print(self.file)     
+        self.commandLineOut.append(f"You have selected: {self.file} as output file location.")
         
     def shutdownClick(self):
         sys.exit(app.exec_())
