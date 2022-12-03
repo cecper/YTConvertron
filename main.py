@@ -23,16 +23,22 @@ class Form(QDialog):
 
             self.file="."
             self.setWindowTitle("YTConverter")
-            self.url = QLineEdit("https://www.youtube.com/watch?v=qa8xw4-dDW8")
-            
 
+            self.url = QLineEdit()
+            labelUrl = QLabel("video url:",self)
+            labelUrl.setAlignment(Qt.AlignHCenter |Qt.AlignBottom)
+            labelUrl.setBuddy(self.url)
+            
             self.cb = QComboBox()
+        
             self.cb.addItem('MP3')
+            self.cb.addItem('playlistMp3')
+            self.cb.addItem('playlistMp4')
             self.cb.addItem('LowMP4')
             self.cb.addItem('720MP4')
             self.cb.addItem('1080fps24MP4')
             self.cb.addItem('1080fps60MP4')
-
+            
             self.button = QPushButton("Convert")
             self.fileDialogButton = QPushButton("Select video ouput location")
             self.exitButton = QPushButton("Exit")
@@ -63,11 +69,11 @@ class Form(QDialog):
 
 
     def clickMethod(self):
-        try:
-            threading.Thread(target=self.convertInClass(), daemon=True).start()
-            self.commandLineOut.append(f'Your video was found and downloaded in {self.file}.')
-        except:
-            self.commandLineOut.append('Your video was not found, check the url.')
+            try:
+                threading.Thread(target=self.convertInClass(), daemon=True).start()
+                self.commandLineOut.append(f'Your video was found and downloaded in {self.file}.')
+            except:
+                self.commandLineOut.append('Your video was not found, check the url. If you\'re trying to download a playlist select the right dropdown item.')
 
     def convertInClass(self):
         self.cbString=str(self.cb.currentText())
