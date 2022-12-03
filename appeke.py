@@ -19,10 +19,12 @@ def convert(url,format=None,outputPath='.'):
                 yt = YouTube(url,on_progress_callback=on_progress)
                 yt.streams.get_lowest_resolution().download(output_path=outputPath,filename=f'{yt.title}Low.mp4')
                 return 
+
             case '720MP4':
                 yt = YouTube(url,on_progress_callback=on_progress)
                 yt.streams.get_highest_resolution().download(output_path=outputPath,filename=f'{yt.title}720p.mp4')
                 return
+                
             case '1080fps24MP4':
                 yt = YouTube(url,on_progress_callback=on_progress)
                 yt.streams.filter(abr="160kbps", progressive=False).first().download(output_path=outputPath,filename="tempAudio.mp3")

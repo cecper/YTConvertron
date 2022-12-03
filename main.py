@@ -1,7 +1,7 @@
 from appeke import convert
 import sys
-from PySide2.QtWidgets import *
-from PySide2.QtGui import *
+from PySide2.QtWidgets import QApplication,QDialog,QLineEdit,QLabel,QComboBox,QPushButton,QVBoxLayout,QTextEdit,QFileDialog
+from PySide2.QtGui import QScreen,Qt,QIcon
 import threading
 
 from PySide2.QtCore import Signal
