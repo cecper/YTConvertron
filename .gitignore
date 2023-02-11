@@ -1,2 +1,5 @@
-.spec
-main_converter.spec
+
+__pycache__
+user_pref.ini
+build/*
+src/build/*
