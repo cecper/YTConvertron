@@ -1,78 +1,79 @@
-from pytube import YouTube
-from pytube.cli import on_progress
-import ffmpeg
-from pytube import Playlist
+from yt_dlp import YoutubeDL
+import sys
 
+outputPath = ''
+url = ''
+format = ''
+try:
+    url = sys.argv[1]
+    format = sys.argv[2]
+    outputPath = sys.argv[3]
+except IndexError:
+    print("Please provide the url, format and output path as arguments.")
 
-def convert(url,format=None,outputPath='.'):
+#def convert():
+    
+match format:
+    case 'MP3':
 
-    if not url:
-        raise Exception("Please enter a URL.")
+        ydl_opts = {
+        'format': 'bestaudio/best',
+        'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+        'noplaylist': False,
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': 'highest'
+        }],
+        }
 
-    try: 
-        match format:
-            case 'MP3':
-                yt = YouTube(url,on_progress_callback=on_progress)
-                yt.streams.get_audio_only().download(output_path=outputPath,filename=f'{yt.title}.mp3')
-                return
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
 
-            case 'LowMP4':
-                yt = YouTube(url,on_progress_callback=on_progress)
-                yt.streams.get_lowest_resolution().download(output_path=outputPath,filename=f'{yt.title}Low.mp4')
-                return 
+    case 'lowest quality MP4':
 
-            case '720MP4':
-                yt = YouTube(url,on_progress_callback=on_progress)
-                yt.streams.get_highest_resolution().download(output_path=outputPath,filename=f'{yt.title}720p.mp4')
-                return
-                
-            case '1080fps24MP4':
-                yt = YouTube(url,on_progress_callback=on_progress)
-                yt.streams.filter(abr="160kbps", progressive=False).first().download(output_path=outputPath,filename="tempAudio.mp3")
-                yt.streams.filter(progressive=False, file_extension='mp4').order_by('resolution').desc().first().download(output_path=outputPath,filename="tempVideo.mp4")
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4][height<=480]+bestaudio[ext=m4a]/best[ext=mp4]',
+            'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+            'noplaylist': False
+        }
 
-                input_video = ffmpeg.input(f'{outputPath}/tempVideo.mp4')
-                input_audio = ffmpeg.input(f'{outputPath}/tempAudio.mp3')
-                ffmpeg.concat(input_video, input_audio, v=1, a=1).filter('fps', fps=30, round='up').output(f'{outputPath}/{yt.title}1080p.mp4').run()
-                return 
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
 
-            case '1080fps60MP4':
-                yt = YouTube(url,on_progress_callback=on_progress)
-                yt.streams.filter(abr="160kbps", progressive=False).first().download(output_path=outputPath,filename="tempAudio.mp3")
-                yt.streams.filter(progressive=False, file_extension='mp4').order_by('resolution').desc().first().download(output_path=outputPath,filename="tempVideo.mp4")
-                
-                input_video = ffmpeg.input(f'{outputPath}/tempVideo.mp4')
-                input_audio = ffmpeg.input(f'{outputPath}/tempAudio.mp3')
-                ffmpeg.concat(input_video, input_audio, v=1, a=1).filter('fps', fps=60, round='up').output(f'{outputPath}/{yt.title}1080p.mp4').run()
-                return 
+    case 'medium quality MP4':
 
-            case 'playlistMp3':
-                playlist = Playlist(url)
-                i=0
-                for video in playlist.videos:
-                    i+=1
-                    try:
-                        print(video.title)
-                        video.streams.get_audio_only().download(output_path=outputPath,filename=f'{i}{video.title}.mp3')
-                        print(f"{video.title} has been downloaded.")
-                    except:
-                        print(f"{video.title} could not be downloaded.")
-                        pass
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4][height<=720]+bestaudio[ext=m4a]/best[ext=mp4]',
+            'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+            'noplaylist': False
+        }
 
-            case 'playlistMp4':
-                playlist = Playlist(url)
-                i=0
-                for video in playlist.videos:
-                    i+=1
-                    try:
-                        print(video.title)
-                        video.streams.get_highest_resolution().download(output_path=outputPath,filename=f'{i}{video.title}.mp4')
-                    except:
-                        print(f"{video.title} could not be downloaded.")
-                        pass
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
+        
+    case 'highest quality MP4':
 
-    except:
-        raise Exception('Your video was not found, check the url. If you\'re trying to download a '
-                                           'playlist select the right dropdown item.')
-           
-            
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+            'noplaylist': False
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
+
+    case 'highest framerate/quality MP4':
+        
+        ydl_opts = {
+            'format': 'bestvideo[fps<=60][ext=mp4]+bestaudio[ext=m4a]/best[fps<=60][ext=mp4]/best',
+            'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+            'noplaylist': False
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])

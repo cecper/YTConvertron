@@ -1,0 +1,3 @@
+python -c "from youtube_converter import convert; convert('https://www.youtube.com/watch?v=ueQDmaoAF2c', 'MP3','.')"
+pyinstaller --debug=imports --hidden-import youtube_converter.py --onefile main_converter.py
+pyinstaller --debug=imports console=True --onedir main_converter.py
