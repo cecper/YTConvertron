@@ -35,7 +35,6 @@ def convert_video(form,url,format=None,outputPath='.'):
         match format:
             case 'MP3':
                 yt = YouTube(url,on_progress_callback=on_progress)
-                print(f"The file is approx {yt.streams.get_audio_only().filesize_approx} bytes big")
                 path = yt.streams.get_audio_only().download(output_path=outputPath,filename=f'{yt.title}.mp3')
                 form.commandLineOut.append(f"{yt.title} has been downloaded.")
                 return path
@@ -75,4 +74,4 @@ def convert_video(form,url,format=None,outputPath='.'):
                 return (f'{outputPath}/{yt.title}_1080p60.mp4')
 
     except:
-        raise Exception('Your video was not found, check the url. If you\'re trying to download a playlist select the right dropdown item.')
+        raise Exception('Your video was not found, check the url.')
