@@ -35,7 +35,7 @@ class Form(QDialog):
         exitButton = QPushButton("Exit")
         self.commandLineOut = QTextEdit(readOnly=True)
         self.commandLineOut.setPlaceholderText("Output")
-        cb_array = ['MP3','LowMP4','720pMP4','1080p30fpsMP4','1080p60fpsMP4','HighMP4']
+        cb_array = ['MP3','LowMP4','720pMP4','1080p30fpsMP4','1080p60fpsMP4']
         self.cb = QComboBox()
         self.cb.addItems(cb_array)
         
