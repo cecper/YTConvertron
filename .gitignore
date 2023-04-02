@@ -3,3 +3,6 @@ __pycache__
 user_pref.ini
 build/*
 src/build/*
+*.mp3
+*.mp4
+.DS_Store

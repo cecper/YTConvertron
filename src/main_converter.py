@@ -1,16 +1,13 @@
 from youtube_converter import convert
 import sys
-from PySide2.QtWidgets import QWidget,QTabWidget,QApplication,QDialog,QLineEdit,QComboBox,QPushButton,QVBoxLayout,QTextEdit,QFileDialog
-from PySide2.QtGui import QScreen,Qt,QIcon
+from PySide6.QtWidgets import QWidget,QTabWidget,QApplication,QDialog,QLineEdit,QComboBox,QPushButton,QVBoxLayout,QTextEdit,QFileDialog
+from PySide6.QtGui import QScreen,Qt,QIcon
 #from PySide2.QtCore import QRunnable, Slot, QThreadPool #multithreading WIP 
 
 import configparser
 
-
 class Form(QDialog):
-
     def __init__(self, parent=None):
-
         super(Form, self).__init__(parent)
         self.file="."
         self.setWindowFlags(self.windowFlags()^ Qt.WindowContextHelpButtonHint)
@@ -38,7 +35,7 @@ class Form(QDialog):
         exitButton = QPushButton("Exit")
         self.commandLineOut = QTextEdit(readOnly=True)
         self.commandLineOut.setPlaceholderText("Output")
-        cb_array = ['MP3','playlistMp3','playlistMp4','LowMP4','720MP4','1080fps24MP4','1080fps60MP4']
+        cb_array = ['MP3','LowMP4','720pMP4','1080p30fpsMP4','1080p60fpsMP4']
         self.cb = QComboBox()
         self.cb.addItems(cb_array)
         
@@ -91,9 +88,8 @@ class Form(QDialog):
         urlString=self.url_input_field.text()
         print(urlString)
         print(cbString)
-
         
-    # read values from a section
+        # read values from a section
         try:
             config = configparser.ConfigParser()
             config.read('user_pref.ini')
@@ -105,21 +101,23 @@ class Form(QDialog):
             with open('user_pref.ini', 'w') as configfile:    # save
                 config.write(configfile)
 
-        convert(urlString,cbString,config.get('file_saving_pref', 'default_path'))
+        path = convert(self,urlString,cbString,config.get('file_saving_pref', 'default_path'))
+        print(path)
+        return path
 
     def click_method(self):
         try:
-            self.convert_in_class()
-            self.commandLineOut.append(f'Your video was found and downloaded in {self.file}.')
+            path = self.convert_in_class()
+            self.commandLineOut.append(f'Your video was found and downloaded in {path}')
         except Exception as e:
             self.commandLineOut.append(str(e))
 
-    def commandLineOut_append(self, text):
+    def commandLineOut_append(self,text):
         self.commandLineOut.append(text)
 
     def shutdown_click(self):
         sys.exit(app.exec_())
-
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('yt_icon.png'))
