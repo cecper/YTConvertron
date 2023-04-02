@@ -6,7 +6,6 @@ from PySide6.QtGui import QScreen,Qt,QIcon
 
 import configparser
 
-
 class Form(QDialog):
 
     def __init__(self, parent=None):
@@ -38,7 +37,7 @@ class Form(QDialog):
         exitButton = QPushButton("Exit")
         self.commandLineOut = QTextEdit(readOnly=True)
         self.commandLineOut.setPlaceholderText("Output")
-        cb_array = ['MP3','playlistMp3','playlistMp4','LowMP4','720MP4','1080fps24MP4','1080fps60MP4']
+        cb_array = ['MP3','LowMP4','720pMP4','1080p30fpsMP4','1080p60fpsMP4','HighMP4']
         self.cb = QComboBox()
         self.cb.addItems(cb_array)
         
@@ -105,7 +104,9 @@ class Form(QDialog):
             with open('user_pref.ini', 'w') as configfile:    # save
                 config.write(configfile)
 
-        convert(urlString,cbString,config.get('file_saving_pref', 'default_path'))
+        path = convert(self,urlString,cbString,config.get('file_saving_pref', 'default_path'))
+        print(path)
+        self.commandLineOut.append(path)
 
     def click_method(self):
         try:
@@ -114,11 +115,12 @@ class Form(QDialog):
         except Exception as e:
             self.commandLineOut.append(str(e))
 
-    def commandLineOut_append(self, text):
+    def commandLineOut_append(self,text):
         self.commandLineOut.append(text)
 
     def shutdown_click(self):
         sys.exit(app.exec_())
+    
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
