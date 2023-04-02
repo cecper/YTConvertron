@@ -2,13 +2,32 @@ from pytube import YouTube
 from pytube.cli import on_progress
 import ffmpeg
 from pytube import Playlist
-
+import re
 
 def convert(url,format=None,outputPath='.'):
 
     if not url:
         raise Exception("Please enter a URL.")
-
+    
+    #Test for playlist in url
+    playlist_re = '/playlist\?'
+    if(re.search(playlist_re,url)!=None):
+            playlist = Playlist(url)
+            print(f"Playlist with title: {playlist.title} found")
+            i=0
+            for video in playlist.videos:
+                i+=1
+                try:
+                    print(video.title)
+                    convert_video(video.watch_url,format,outputPath)
+                    print(f"{video.title} has been downloaded.")
+                except:
+                    print(f"{video.title} could not be downloaded.")
+                    pass
+    else:
+        convert_video(url,format,outputPath)
+    
+def convert_video(url,format=None,outputPath='.'):
     try: 
         match format:
             case 'MP3':
@@ -74,5 +93,3 @@ def convert(url,format=None,outputPath='.'):
     except:
         raise Exception('Your video was not found, check the url. If you\'re trying to download a '
                                            'playlist select the right dropdown item.')
-           
-            

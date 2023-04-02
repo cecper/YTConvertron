@@ -1,7 +1,7 @@
 from youtube_converter import convert
 import sys
-from PySide2.QtWidgets import QWidget,QTabWidget,QApplication,QDialog,QLineEdit,QComboBox,QPushButton,QVBoxLayout,QTextEdit,QFileDialog
-from PySide2.QtGui import QScreen,Qt,QIcon
+from PySide6.QtWidgets import QWidget,QTabWidget,QApplication,QDialog,QLineEdit,QComboBox,QPushButton,QVBoxLayout,QTextEdit,QFileDialog
+from PySide6.QtGui import QScreen,Qt,QIcon
 #from PySide2.QtCore import QRunnable, Slot, QThreadPool #multithreading WIP 
 
 import configparser
