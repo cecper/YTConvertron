@@ -7,9 +7,7 @@ from PySide6.QtGui import QScreen,Qt,QIcon
 import configparser
 
 class Form(QDialog):
-
     def __init__(self, parent=None):
-
         super(Form, self).__init__(parent)
         self.file="."
         self.setWindowFlags(self.windowFlags()^ Qt.WindowContextHelpButtonHint)
@@ -90,9 +88,8 @@ class Form(QDialog):
         urlString=self.url_input_field.text()
         print(urlString)
         print(cbString)
-
         
-    # read values from a section
+        # read values from a section
         try:
             config = configparser.ConfigParser()
             config.read('user_pref.ini')
@@ -106,12 +103,12 @@ class Form(QDialog):
 
         path = convert(self,urlString,cbString,config.get('file_saving_pref', 'default_path'))
         print(path)
-        self.commandLineOut.append(path)
+        return path
 
     def click_method(self):
         try:
-            self.convert_in_class()
-            self.commandLineOut.append(f'Your video was found and downloaded in {self.file}.')
+            path = self.convert_in_class()
+            self.commandLineOut.append(f'Your video was found and downloaded in {path}')
         except Exception as e:
             self.commandLineOut.append(str(e))
 
@@ -121,7 +118,6 @@ class Form(QDialog):
     def shutdown_click(self):
         sys.exit(app.exec_())
     
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('yt_icon.png'))
