@@ -15,10 +15,9 @@ except IndexError:
     
 match format:
     case 'MP3':
-
         ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': f'{outputPath}/%(title)s.%(ext)s',
+        'outtmpl': f'{outputPath}/%(title)s.mp3',
         'noplaylist': False,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
