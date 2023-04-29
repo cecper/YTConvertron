@@ -4,3 +4,6 @@ user_pref.ini
 build/*
 src/build/*
 secret.env
+../main_converter.spec
+*.spec
+src/main_converter.spec
