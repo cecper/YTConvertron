@@ -4,3 +4,5 @@ user_pref.ini
 build/*
 src/build/*
 secret.env
+.idea
+.venv
